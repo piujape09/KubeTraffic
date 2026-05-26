@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-content
+  namespace: kubetraffic
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>KubeTraffic</title>
+        <style>
+          :root { color-scheme: dark; }
+          * { box-sizing: border-box; }
+          body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(1200px 600px at 20% 0%, #1e3a8a 0%, #0b1020 60%);
+            color: #e6edf3;
+            display: grid;
+            place-items: center;
+            padding: 2rem;
+          }
+          .card {
+            max-width: 720px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2.5rem 2.75rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+          }
+          h1 { margin: 0 0 .25rem; font-size: 2.25rem; letter-spacing: -0.02em; }
+          .tag { color: #93c5fd; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: .75rem; }
+          p { line-height: 1.55; color: #cbd5e1; }
+          .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1.5rem; margin-top: 1.25rem; }
+          .grid div { padding: .5rem .75rem; background: rgba(255,255,255,0.03); border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+          .pill { display: inline-block; margin-top: 1.25rem; padding: .35rem .7rem; border-radius: 999px; background: #10b981; color: #052e1f; font-weight: 700; font-size: .8rem; }
+          footer { margin-top: 1.5rem; font-size: .75rem; color: #94a3b8; }
+        </style>
+      </head>
+      <body>
+        <main class="card">
+          <div class="tag">Kubernetes demo</div>
+          <h1>KubeTraffic</h1>
+          <p>Production-shaped Kubernetes workload — scaling, self-healing, RBAC, and network policy in one place.</p>
+          <div class="grid">
+            <div>Namespace: kubetraffic</div>
+            <div>Service: nginx-service</div>
+            <div>HPA: 2 → 5 @ 50% CPU</div>
+            <div>NetworkPolicy: nginx-allow-http</div>
+          </div>
+          <span class="pill">healthy</span>
+          <footer>Served by nginx · Pod hostname injected by Kubernetes downward API at runtime.</footer>
+        </main>
+      </body>
+    </html>

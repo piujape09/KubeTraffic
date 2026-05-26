@@ -1,0 +1,51 @@
+namespace:
+  create: true
+  name: kubetraffic
+
+image:
+  repository: nginx
+  tag: 1.27-alpine
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+config:
+  ENV: production
+  LOG_LEVEL: debug
+
+# base64-encoded values
+secret:
+  PASSWORD: MTIzNDU=
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+
+ingress:
+  enabled: true
+  host: nginx.local
+  className: ""
+
+networkPolicy:
+  enabled: true
+
+serviceAccount:
+  name: read-only-sa
+
+# Set true to expose Prometheus metrics via the nginx-prometheus-exporter sidecar
+metrics:
+  enabled: false
+  image: nginx/nginx-prometheus-exporter:1.3.0
+  serviceMonitor:
+    enabled: false
+    interval: 30s

@@ -1,0 +1,27 @@
+# Run on demand to drive CPU up and trigger the HPA.
+#   kubectl apply -f manifests/load-generator.yml
+#   kubectl -n kubetraffic logs -f job/load-generator
+#   kubectl -n kubetraffic delete job load-generator
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-generator
+  namespace: kubetraffic
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: load
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Generating load against nginx-service for 5 minutes...";
+              end=$(( $(date +%s) + 300 ));
+              while [ $(date +%s) -lt $end ]; do
+                wget -q -O- http://nginx-service.kubetraffic.svc.cluster.local/ >/dev/null;
+              done;
+              echo "Done.";
